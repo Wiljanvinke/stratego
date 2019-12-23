@@ -1,25 +1,31 @@
 package game.pieces;
 
 import game.Player;
+import game.extra.Rank;
 
 public class Piece {
-    private int rank;
+    private Rank rank;
     private Player player;
 
     public Piece(){
 
     }
 
-    public Piece(Player player, int rank){
+    public Piece(Player player, Rank rank){
         this.player = player;
         this.rank = rank;
     }
 
-    public int getRank() {
+    public Piece(Player player, int rank){
+        this.player = player;
+        this.rank = Rank.toEnum(rank);
+    }
+
+    public Rank getRank() {
         return rank;
     }
 
-    public void setRank(int rank) {
+    public void setRank(Rank rank) {
         this.rank = rank;
     }
 
@@ -31,7 +37,19 @@ public class Piece {
         this.player = player;
     }
 
+    public String toString(){
+        return player.getColor().toString() + " " + getRank().toString();
+    }
 
+    public String toCode(){
+        String rank = getRank().toInt() + "";
+        if (rank.length() < 2){
+            rank = rank + " ";
+        }
+        return player.getColor().toChar() + rank;
+    }
+
+    /*
     public String toString(){
         switch (rank){
             case 0:
@@ -62,4 +80,5 @@ public class Piece {
                 return "Invalid";
         }
     }
+     */
 }

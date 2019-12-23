@@ -1,5 +1,7 @@
 package game;
 
+import game.extra.Color;
+
 import java.util.Collections;
 
 public class Game {
@@ -12,8 +14,8 @@ public class Game {
     public Game(){
         board = new Board();
         //board.printBoardPlayable();
-        player1 = new Player("Red");
-        player2 = new Player("Blue");
+        player1 = new Player(Color.RED);
+        player2 = new Player(Color.BLUE);
         setupRandomBoard();
         board.printBoardPieces();
     }

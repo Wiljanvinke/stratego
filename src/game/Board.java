@@ -1,5 +1,9 @@
 package game;
 
+import game.extra.ANSI;
+import game.extra.Color;
+import game.pieces.Piece;
+
 public class Board {
     private Field[][] playFields;
 
@@ -39,12 +43,30 @@ public class Board {
 
     public void printBoardPieces(){
         for (int i = 0; i < 10; i++){
+            System.out.println("-------------------------------------------------------------");
             for (int j = 0; j < 10; j++){
-                if(playFields[i][j].getPiece()!=null) {
-                    System.out.print(playFields[i][j].getPiece().toString());
+                System.out.print("|");
+                Piece piece = playFields[i][j].getPiece();
+                if(piece != null) {
+                    if (piece.getPlayer().getColor() == Color.RED){
+                        System.out.print(" " + ANSI.ANSI_RED + playFields[i][j].getPiece().toCode() + ANSI.ANSI_RESET + " ");
+                    }
+                    if (piece.getPlayer().getColor() == Color.BLUE){
+                        System.out.print(" " + ANSI.ANSI_BLUE + playFields[i][j].getPiece().toCode() + ANSI.ANSI_RESET + " ");
+                    }
+                } else {
+                    if (playFields[i][j].isPlayable()){
+                        System.out.print("     ");
+                    } else {
+                        System.out.print("  X  ");
+                    }
+                }
+                if (j == 9){
+                    System.out.print("|");
                 }
             }
             System.out.println();
         }
+        System.out.println("-------------------------------------------------------------");
     }
 }
