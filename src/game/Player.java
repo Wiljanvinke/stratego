@@ -1,16 +1,17 @@
 package game;
 
+import game.extra.Color;
 import game.pieces.*;
 
 import java.util.ArrayList;
 
 public class Player {
     private String name;
-    private String color;
+    private Color color;
     private ArrayList<Piece> pieces;
 
 
-    public Player(String color) {
+    public Player(Color color) {
         this.color = color;
         pieces = new ArrayList<Piece>();
 
@@ -75,11 +76,11 @@ public class Player {
         this.name = name;
     }
 
-    public String getColor() {
+    public Color getColor() {
         return color;
     }
 
-    public void setColor(String color) {
+    public void setColor(Color color) {
         this.color = color;
     }
 
