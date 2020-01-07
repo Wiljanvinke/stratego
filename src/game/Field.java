@@ -33,5 +33,10 @@ public class Field {
 
     public void setPiece(Piece piece) {
         this.piece = piece;
+        if(piece == null){
+            setOccupied(false);
+        } else {
+            setOccupied(true);
+        }
     }
 }
