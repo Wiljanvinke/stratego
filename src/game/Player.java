@@ -111,30 +111,32 @@ public class Player {
         int dCol = Integer.parseInt(in.next());
         Field destination = board.getPlayFields()[dRow][dCol];
 
-        //TODO Refactor to checkValid()
+        //Checks whether the move is valid
+        //TODO catch impossible moves/input
         if(destination.isPlayable()){
-            //TODO Need to apply range correctly
-            if(((row - dRow == piece.getRange() || dRow - row == piece.getRange()) && col - dCol == 0) ||
-                    ((col - dCol == piece.getRange() || dCol - col == piece.getRange()) && row - dRow == 0)){
+            if(piece.isValidRange(row, col, dRow, dCol)){
                 if(!destination.isOccupied()){
                     destination.setPiece(piece);
                     ownField.setPiece(null);
                 } else {
                     if(destination.getPiece().getPlayer() != this){
-                        //TODO make this attack(), make piece's attack() -> compare()
-                        int result = piece.attack(destination.getPiece());
-                        if (result > 0) {
-                            destination.setPiece(piece);
-                            ownField.setPiece(null);
-                        } else if(result < 0) {
-                            ownField.setPiece(null);
-                        } else if(result == 0) {
-                            destination.setPiece(null);
-                            ownField.setPiece(null);
-                        }
+                        attack(piece, ownField, destination);
                     }
                 }
             }
+        }
+    }
+
+    public void attack(Piece piece, Field ownField, Field destination) {
+        int result = piece.compare(destination.getPiece());
+        if (result > 0) {
+            destination.setPiece(piece);
+            ownField.setPiece(null);
+        } else if(result < 0) {
+            ownField.setPiece(null);
+        } else if(result == 0) {
+            destination.setPiece(null);
+            ownField.setPiece(null);
         }
     }
 

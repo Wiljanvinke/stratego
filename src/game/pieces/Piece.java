@@ -53,8 +53,22 @@ public class Piece {
      * 0 as int when ranks are equal
      * Negative int when this Piece has a lower rank
      */
-    public int attack(Piece piece){
+    public int compare(Piece piece){
         return rank.toInt() - piece.getRank().toInt();
+    }
+
+    /**
+     * Checks whether the move entered is within the Piece's range
+     * @param row the row this piece is moving from
+     * @param col the column this piece is moving from
+     * @param dRow the row this piece is moving to
+     * @param dCol the column this piece is moving to
+     * @return true if the destination field is within the Piece's range
+     */
+    public boolean isValidRange(int row, int col, int dRow, int dCol){
+        boolean validVert = (0 < Math.abs(row - dRow) && Math.abs(row - dRow) <= getRange() && col - dCol == 0);
+        boolean validHor = (0 < Math.abs(col - dCol) && Math.abs(col - dCol) <= getRange() && row - dRow == 0);
+        return validVert || validHor;
     }
 
     public String toString(){
@@ -68,37 +82,4 @@ public class Piece {
         }
         return player.getColor().toChar() + rank;
     }
-
-    /*
-    public String toString(){
-        switch (rank){
-            case 0:
-                return player.getColor() + " Flag";
-            case 1:
-                return player.getColor() + " Spy";
-            case 2:
-                return player.getColor() + " Scout";
-            case 3:
-                return player.getColor() + " Miner";
-            case 4:
-                return player.getColor() + " Sergeant";
-            case 5:
-                return player.getColor() + " Lieutenant";
-            case 6:
-                return player.getColor() + " Captain";
-            case 7:
-                return player.getColor() + " Major";
-            case 8:
-                return player.getColor() + " Colonel";
-            case 9:
-                return player.getColor() + " General";
-            case 10:
-                return player.getColor() + " Marshall";
-            case 11:
-                return player.getColor() + " Bomb";
-            default:
-                return "Invalid";
-        }
-    }
-     */
 }
