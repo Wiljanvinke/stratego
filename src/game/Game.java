@@ -14,10 +14,13 @@ public class Game {
     public Game(){
         board = new Board();
         //board.printBoardPlayable();
-        player1 = new Player(Color.RED);
-        player2 = new Player(Color.BLUE);
+        player1 = new Player(Color.RED, board);
+        player2 = new Player(Color.BLUE, board);
         setupRandomBoard();
         board.printBoardPieces();
+        //while(winner == null) {
+            play();
+        //}
     }
 
     public boolean isTurn() {
@@ -81,4 +84,16 @@ public class Game {
         }
         return board;
     }
+
+    public void play(){
+        if(turn == false) {
+            player1.makeMove();
+            turn = true;
+        } else if (turn == true) {
+            player2.makeMove();
+            turn = false;
+        }
+        board.printBoardPieces();
+    }
+
 }

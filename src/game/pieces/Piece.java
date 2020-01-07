@@ -6,6 +6,7 @@ import game.extra.Rank;
 public class Piece {
     private Rank rank;
     private Player player;
+    private int range = 1;
 
     public Piece(){
 
@@ -35,6 +36,25 @@ public class Piece {
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    public int getRange() {
+        return range;
+    }
+
+    public void setRange(int range) {
+        this.range = range;
+    }
+
+    /**
+     * Compares this Piece to another Piece.
+     * @param piece to compare this Piece against
+     * @return Positive int when this Piece has a higher rank.
+     * 0 as int when ranks are equal
+     * Negative int when this Piece has a lower rank
+     */
+    public int attack(Piece piece){
+        return rank.toInt() - piece.getRank().toInt();
     }
 
     public String toString(){
