@@ -1,5 +1,6 @@
 package game;
 
+import game.exceptions.InvalidMoveException;
 import game.extra.Color;
 
 import java.util.Collections;
@@ -86,14 +87,23 @@ public class Game {
     }
 
     public void play(){
-        if(turn == false) {
-            player1.makeMove();
-            turn = true;
-        } else if (turn == true) {
-            player2.makeMove();
-            turn = false;
+        boolean valid = false;
+        while(!valid) {
+            try {
+                if (turn == false) {
+                    player1.makeMove();
+                    turn = true;
+                    valid = true;
+                } else if (turn == true) {
+                    player2.makeMove();
+                    turn = false;
+                    valid = true;
+                }
+                board.printBoardPieces();
+            } catch (InvalidMoveException e) {
+                System.out.println(e.getMessage());
+            }
         }
-        board.printBoardPieces();
     }
 
 }

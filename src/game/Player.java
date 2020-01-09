@@ -1,5 +1,6 @@
 package game;
 
+import game.exceptions.*;
 import game.extra.Color;
 import game.pieces.*;
 
@@ -11,6 +12,7 @@ public class Player {
     private Color color;
     private ArrayList<Piece> pieces;
     private Board board;
+
 
 
     public Player(Color color, Board board) {
@@ -95,36 +97,51 @@ public class Player {
         this.pieces = pieces;
     }
 
-    public void makeMove(){
-        Scanner in = new Scanner(System.in);
+    public void makeMove() throws InvalidMoveException {
+        //Select a field your piece is on
         System.out.println(this.color + ", what row is the piece in (0-9)?");
-        int row = Integer.parseInt(in.next());
+        int row = chooseCoordinate();
+
         System.out.println(this.color + ", what column is the piece in (0-9)?");
-        int col = Integer.parseInt(in.next());
+        int col = chooseCoordinate();
         Field ownField = board.getPlayFields()[row][col];
-        Piece piece = ownField.getPiece();
-        System.out.println("Row: " + row + ", Column: " + col + ", Piece: " + piece.toString());
+        if (ownField.isOccupied()) {
+            Piece piece = ownField.getPiece();
+            System.out.println("Row: " + row + ", Column: " + col + ", Piece: " + piece.toString());
 
-        System.out.println(this.color + ", what row do you want to move the piece to (0-9)?");
-        int dRow = Integer.parseInt(in.next());
-        System.out.println(this.color + ", what column do you want to move the piece to (0-9)?");
-        int dCol = Integer.parseInt(in.next());
-        Field destination = board.getPlayFields()[dRow][dCol];
+            if (piece.getPlayer() == this) {
+                //Select the field you want to move to
+                System.out.println(this.color + ", what row do you want to move the piece to (0-9)?");
+                int dRow = chooseCoordinate();
+                System.out.println(this.color + ", what column do you want to move the piece to (0-9)?");
+                int dCol = chooseCoordinate();
+                Field destination = board.getPlayFields()[dRow][dCol];
 
-        //Checks whether the move is valid
-        //TODO catch impossible moves/input
-        if(destination.isPlayable()){
-            if(piece.isValidRange(row, col, dRow, dCol)){
-                if(!destination.isOccupied()){
-                    destination.setPiece(piece);
-                    ownField.setPiece(null);
-                } else {
-                    if(destination.getPiece().getPlayer() != this){
-                        attack(piece, ownField, destination);
+                if (destination.isPlayable()) {
+                    if (piece.isValidRange(row, col, dRow, dCol)) {
+                        if (!destination.isOccupied()) {
+                            destination.setPiece(piece);
+                            ownField.setPiece(null);
+                        } else {
+                            if (destination.getPiece().getPlayer() != this) {
+                                attack(piece, ownField, destination);
+                            } else {
+                                throw new OccupiedFieldException(this);
+                            }
+                        }
+                    } else {
+                        throw new InvalidRangeException(this, piece.getRank());
                     }
+                } else {
+                    throw new UnplayableFieldException(this);
                 }
+            } else {
+                throw new InvalidPieceException(this);
             }
+        } else {
+            throw new SelectEmptyException(this);
         }
+
     }
 
     public void attack(Piece piece, Field ownField, Field destination) {
@@ -132,15 +149,26 @@ public class Player {
         if (result > 0) {
             destination.setPiece(piece);
             ownField.setPiece(null);
-        } else if(result < 0) {
+        } else if (result < 0) {
             ownField.setPiece(null);
-        } else if(result == 0) {
+        } else if (result == 0) {
             destination.setPiece(null);
             ownField.setPiece(null);
         }
     }
 
-    public void printPieces(){
+    public int chooseCoordinate() throws InvalidCoordinateException {
+        Scanner in = new Scanner(System.in);
+        if(in.hasNextInt()) {
+            int input = in.nextInt();
+            if (0 <= input && input <= 9) {
+                return input;
+            }
+        }
+        throw new InvalidCoordinateException(this);
+    }
+
+    public void printPieces() {
         for (Piece piece : pieces) {
             System.out.println(piece.toString());
         }
