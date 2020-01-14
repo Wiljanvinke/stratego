@@ -123,86 +123,9 @@ public class Player {
                 int dCol = chooseCoordinate();
                 Field destination = board.getPlayFields()[dRow][dCol];
 
+                //if around checkValidMove not necessary
                 if (checkValidMove(row, col, dRow, dCol)) {
-                    int moveRange = -1;
-                    System.out.println("Row: " + row + ", dRow: " + dRow);
-
-                    String direction = null;
-                    if (row < dRow) {
-                        System.out.println("Down");
-                        direction = "down";
-                        moveRange = Math.abs(row - dRow);
-                        System.out.println("Moverange: " + moveRange);
-
-                    }
-                    if (row > dRow) {
-                        direction = "up";
-                        moveRange = Math.abs(row - dRow);
-                    }
-                    if (col < dCol) {
-                        direction = "right";
-                        moveRange = Math.abs(col - dCol);
-                    }
-                    if (col > dCol) {
-                        direction = "left";
-                        moveRange = Math.abs(col - dCol);
-                    }
-                    System.out.println("Moverange: " + moveRange);
-                    for (int i = 0; i < moveRange; i++) {
-                        Field tempOwn = board.getPlayFields()[row][col];
-                        System.out.println("In for loop");
-                        switch (direction) {
-                            case "down":
-                                if (checkValidMove(row, col, row + 1, dCol)) {
-                                    Field tempDestination = board.getPlayFields()[row + 1][col];
-                                    if (tempOwn.isOccupied() && tempDestination.isOccupied() &&
-                                            tempOwn.getPiece().getPlayer().equals(tempDestination.getPiece().getPlayer())) {
-                                        throw new InvalidMoveException("Another Piece blocks the path");
-                                    }
-                                    System.out.println("Down reached");
-                                    row++;
-                                    break;
-                                } else {
-                                    throw new InvalidMoveException("Invalid step in range");
-                                }
-                            case "up":
-                                if (checkValidMove(row, col, row -1, dCol)) {
-                                    Field tempDestination = board.getPlayFields()[row - 1][col];
-                                    if (tempOwn.isOccupied() && tempDestination.isOccupied() &&
-                                            tempOwn.getPiece().getPlayer().equals(tempDestination.getPiece().getPlayer())) {
-                                        throw new InvalidMoveException("Another Piece blocks the path");
-                                    }
-                                    row--;
-                                    break;
-                                } else {
-                                    throw new InvalidMoveException("Invalid step in range");
-                                }
-                            case "right":
-                                if (checkValidMove(row, col, dRow, col + 1)) {
-                                    Field tempDestination = board.getPlayFields()[row][col + 1];
-                                    if (tempOwn.isOccupied() && tempDestination.isOccupied() &&
-                                            tempOwn.getPiece().getPlayer().equals(tempDestination.getPiece().getPlayer())) {
-                                        throw new InvalidMoveException("Another Piece blocks the path");
-                                    }
-                                    col++;
-                                    break;
-                                } else {
-                                    throw new InvalidMoveException("Invalid step in range");
-                                }
-                            case "left":
-                                if (checkValidMove(row, col, dRow, col - 1)) {
-                                    Field tempDestination = board.getPlayFields()[row][col - 1];
-                                    if (tempOwn.isOccupied() && tempDestination.isOccupied() &&
-                                            tempOwn.getPiece().getPlayer().equals(tempDestination.getPiece().getPlayer())) {
-                                        throw new InvalidMoveException("Another Piece blocks the path");
-                                    }
-                                    col--;
-                                    break;
-                                } else {
-                                    throw new InvalidMoveException("Invalid step in range");
-                                }
-                        }
-                    }
+                    checkValidSteps(row, col, dRow, dCol);
                 }
                 if (!destination.isOccupied()) {
                     destination.setPiece(piece);
@@ -225,8 +148,84 @@ public class Player {
 
     }
 
+    public void checkValidSteps(int row, int col, int dRow, int dCol) throws InvalidMoveException {
+        int moveRange = -1;
+        String direction = null;
+        if (row < dRow) {
+            direction = "down";
+            moveRange = Math.abs(row - dRow);
+        }
+        if (row > dRow) {
+            direction = "up";
+            moveRange = Math.abs(row - dRow);
+        }
+        if (col < dCol) {
+            direction = "right";
+            moveRange = Math.abs(col - dCol);
+        }
+        if (col > dCol) {
+            direction = "left";
+            moveRange = Math.abs(col - dCol);
+        }
+        for (int i = 0; i < moveRange; i++) {
+            Field tempOwn = board.getPlayFields()[row][col];
+            switch (direction) {
+                case "down":
+                    if (checkValidMove(row, col, row + 1, dCol)) {
+                        Field tempDestination = board.getPlayFields()[row + 1][col];
+                        if (tempOwn.isOccupied() && tempDestination.isOccupied() &&
+                                tempOwn.getPiece().getPlayer().equals(tempDestination.getPiece().getPlayer())) {
+                            throw new InvalidStepException("Another Piece blocks the path");
+                        }
+                        row++;
+                        break;
+                    } else {
+                        throw new InvalidStepException("Invalid step in range");
+                    }
+                case "up":
+                    if (checkValidMove(row, col, row -1, dCol)) {
+                        Field tempDestination = board.getPlayFields()[row - 1][col];
+                        if (tempOwn.isOccupied() && tempDestination.isOccupied() &&
+                                tempOwn.getPiece().getPlayer().equals(tempDestination.getPiece().getPlayer())) {
+                            throw new InvalidStepException("Another Piece blocks the path");
+                        }
+                        row--;
+                        break;
+                    } else {
+                        throw new InvalidStepException("Invalid step in range");
+                    }
+                case "right":
+                    if (checkValidMove(row, col, dRow, col + 1)) {
+                        Field tempDestination = board.getPlayFields()[row][col + 1];
+                        if (tempOwn.isOccupied() && tempDestination.isOccupied() &&
+                                tempOwn.getPiece().getPlayer().equals(tempDestination.getPiece().getPlayer())) {
+                            throw new InvalidStepException("Another Piece blocks the path");
+                        }
+                        col++;
+                        break;
+                    } else {
+                        throw new InvalidStepException("Invalid step in range");
+                    }
+                case "left":
+                    if (checkValidMove(row, col, dRow, col - 1)) {
+                        Field tempDestination = board.getPlayFields()[row][col - 1];
+                        if (tempOwn.isOccupied() && tempDestination.isOccupied() &&
+                                tempOwn.getPiece().getPlayer().equals(tempDestination.getPiece().getPlayer())) {
+                            throw new InvalidStepException("Another Piece blocks the path");
+                        }
+                        col--;
+                        break;
+                    } else {
+                        throw new InvalidStepException("Invalid step in range");
+                    }
+                default:
+                    throw new InvalidStepException("No correct direction somehow");
+            }
+        }
+    }
+
     public boolean checkValidMove(int row, int col, int dRow, int dCol)
-            throws OccupiedFieldException, InvalidRangeException, UnplayableFieldException {
+            throws InvalidMoveException {
         Piece piece = board.getPlayFields()[row][col].getPiece();
         Field destination = board.getPlayFields()[dRow][dCol];
         //Check if the destination Field is not water

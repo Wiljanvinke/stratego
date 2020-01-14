@@ -57,7 +57,6 @@ public class Piece {
         return rank.toInt() - piece.getRank().toInt();
     }
 
-    //TODO Check if fields in path are empty
     /**
      * Checks whether the move entered is within the Piece's range
      * @param row the row this piece is moving from
