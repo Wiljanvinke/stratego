@@ -8,4 +8,9 @@ public class Scout extends Piece {
     public Scout(Player player){
         super(player, 2);
     }
+
+/*    @Override
+    public int getRange() {
+        return range;
+    }*/
 }
