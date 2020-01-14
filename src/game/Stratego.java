@@ -7,4 +7,5 @@ public class Stratego {
     //TODO wincondition
     //TODO unique piece behaviour
     //TODO concealment
+    //TODO setup phase
 }

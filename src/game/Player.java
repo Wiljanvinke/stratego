@@ -97,18 +97,24 @@ public class Player {
         this.pieces = pieces;
     }
 
+    /**
+     * Move a Piece from one Field to another using user input
+     * @throws InvalidMoveException if the entered move was invalid
+     */
     public void makeMove() throws InvalidMoveException {
         //Select a field your piece is on
         System.out.println(this.color + ", what row is the piece in (0-9)?");
         int row = chooseCoordinate();
-
         System.out.println(this.color + ", what column is the piece in (0-9)?");
         int col = chooseCoordinate();
         Field ownField = board.getPlayFields()[row][col];
+
+        //Check if Field has a Piece on it
         if (ownField.isOccupied()) {
             Piece piece = ownField.getPiece();
             System.out.println("Row: " + row + ", Column: " + col + ", Piece: " + piece.toString());
 
+            //Check if Piece belongs to this Player
             if (piece.getPlayer() == this) {
                 //Select the field you want to move to
                 System.out.println(this.color + ", what row do you want to move the piece to (0-9)?");
@@ -117,14 +123,18 @@ public class Player {
                 int dCol = chooseCoordinate();
                 Field destination = board.getPlayFields()[dRow][dCol];
 
+                //Check if the destination Field is not water
                 if (destination.isPlayable()) {
+                    //Check if the destination Field is within range of the Piece
                     if (piece.isValidRange(row, col, dRow, dCol)) {
+                        //Check if the destination Field is empty, move there if it is
                         if (!destination.isOccupied()) {
                             destination.setPiece(piece);
                             ownField.setPiece(null);
                         } else {
+                            //Check if the Piece on the destination Field belongs to this Player
                             if (destination.getPiece().getPlayer() != this) {
-                                attack(piece, ownField, destination);
+                                attack(ownField, destination);
                             } else {
                                 throw new OccupiedFieldException(this);
                             }
@@ -144,7 +154,17 @@ public class Player {
 
     }
 
-    public void attack(Piece piece, Field ownField, Field destination) {
+    //TODO Attacking removes Pieces from the Player's list
+    /**
+     * Occurs when trying to move a Piece this Player owns to a Field containing a Piece belonging to the other Player.
+     * Compares the Ranks of the two Pieces. The lower ranking Piece is removed from its Field and the Board. If the
+     * attacking Piece has a higher Rank, it also moves into the Field it is attacking to. If both Pieces have the same
+     * Rank, they are both removed from their Field and the Board.
+     * @param ownField the Field this Player attacks from (cannot be null)
+     * @param destination the Field this Player attacks to (cannot be null)
+     */
+    public void attack(Field ownField, Field destination) {
+        Piece piece = ownField.getPiece();
         int result = piece.compare(destination.getPiece());
         if (result > 0) {
             destination.setPiece(piece);
@@ -157,6 +177,11 @@ public class Player {
         }
     }
 
+    /**
+     * Accepts user input to select a valid row or column, defined as an integer ranging from 0-9 (including 9)
+     * @return integer ranging from 0 to 9 (including 9)
+     * @throws InvalidCoordinateException when the user input is not an integer ranging from 0-9 (including 9)
+     */
     public int chooseCoordinate() throws InvalidCoordinateException {
         Scanner in = new Scanner(System.in);
         if(in.hasNextInt()) {
