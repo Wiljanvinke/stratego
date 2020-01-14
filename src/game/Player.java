@@ -150,15 +150,10 @@ public class Player {
 
     public void checkValidSteps(int row, int col, int dRow, int dCol) throws InvalidMoveException {
         int moveRange = -1;
-        System.out.println("Row: " + row + ", dRow: " + dRow);
-
         String direction = null;
         if (row < dRow) {
-            System.out.println("Down");
             direction = "down";
             moveRange = Math.abs(row - dRow);
-            System.out.println("Moverange: " + moveRange);
-
         }
         if (row > dRow) {
             direction = "up";
@@ -172,10 +167,8 @@ public class Player {
             direction = "left";
             moveRange = Math.abs(col - dCol);
         }
-        System.out.println("Moverange: " + moveRange);
         for (int i = 0; i < moveRange; i++) {
             Field tempOwn = board.getPlayFields()[row][col];
-            System.out.println("In for loop");
             switch (direction) {
                 case "down":
                     if (checkValidMove(row, col, row + 1, dCol)) {
@@ -184,7 +177,6 @@ public class Player {
                                 tempOwn.getPiece().getPlayer().equals(tempDestination.getPiece().getPlayer())) {
                             throw new InvalidStepException("Another Piece blocks the path");
                         }
-                        System.out.println("Down reached");
                         row++;
                         break;
                     } else {
