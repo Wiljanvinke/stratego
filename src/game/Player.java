@@ -225,6 +225,8 @@ public class Player {
                     } else {
                         throw new InvalidStepException("Invalid step in range");
                     }
+                default:
+                    throw new InvalidStepException("No correct direction somehow");
             }
         }
     }
