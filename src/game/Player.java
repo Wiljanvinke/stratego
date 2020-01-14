@@ -123,6 +123,7 @@ public class Player {
                 int dCol = chooseCoordinate();
                 Field destination = board.getPlayFields()[dRow][dCol];
 
+                //if around checkValidMove not necessary
                 if (checkValidMove(row, col, dRow, dCol)) {
                     checkValidSteps(row, col, dRow, dCol);
                 }
