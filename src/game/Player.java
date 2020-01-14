@@ -123,28 +123,53 @@ public class Player {
                 int dCol = chooseCoordinate();
                 Field destination = board.getPlayFields()[dRow][dCol];
 
-                //Check if the destination Field is not water
-                if (destination.isPlayable()) {
-                    //Check if the destination Field is within range of the Piece
-                    if (piece.isValidRange(row, col, dRow, dCol)) {
-                        //Check if the destination Field is empty, move there if it is
-                        if (!destination.isOccupied()) {
-                            destination.setPiece(piece);
-                            ownField.setPiece(null);
-                        } else {
-                            //Check if the Piece on the destination Field belongs to this Player
-                            if (destination.getPiece().getPlayer() != this) {
-                                attack(ownField, destination);
-                            } else {
-                                throw new OccupiedFieldException(this);
-                            }
-                        }
-                    } else {
-                        throw new InvalidRangeException(this, piece.getRank());
+                if(checkValidMove(row, col, dRow, dCol)){
+                    int moveRange = 0;
+                    String direction = null;
+                    if (row <= dRow){
+                        direction = "down";
+                        moveRange = Math.abs(row - dRow);
                     }
-                } else {
-                    throw new UnplayableFieldException(this);
+                    if (row >= dRow){
+                        direction = "up";
+                        moveRange = Math.abs(row - dRow);
+                    }
+                    if (col <= dCol){
+                        direction = "right";
+                        moveRange = Math.abs(col - dCol);
+                    }
+                    if (col >= dCol){
+                        direction = "left";
+                        moveRange = Math.abs(col - dCol);
+                    }
+                    for(int i = 0; i < moveRange; i++){
+                        switch (direction){
+                            case "down":
+                                if(checkValidMove(row, col, row + 1, dCol)){
+                                    if(board.getPlayFields()[row][col].getPiece().getPlayer()
+                                            .equals(board.getPlayFields()[row+1][col].getPiece().getPlayer())) {
+                                        throw new InvalidMoveException("Another Piece blocks the path");
+                                    }
+                                    row++;
+                                    break;
+                                } else {
+                                    throw new InvalidMoveException("Invalid step in range");
+                                }
+                        }
+                    }
                 }
+                if (!destination.isOccupied()) {
+                    destination.setPiece(piece);
+                    ownField.setPiece(null);
+                } else {
+                    //Check if the Piece on the destination Field belongs to this Player
+                    if (destination.getPiece().getPlayer() != this) {
+                        attack(ownField, destination);
+                    } else {
+                        throw new OccupiedFieldException(this);
+                    }
+                }
+
             } else {
                 throw new InvalidPieceException(this);
             }
@@ -153,6 +178,40 @@ public class Player {
         }
 
     }
+
+    public boolean checkValidMove(int row, int col, int dRow, int dCol)
+            throws OccupiedFieldException, InvalidRangeException, UnplayableFieldException {
+        Piece piece = board.getPlayFields()[row][col].getPiece();
+        Field destination = board.getPlayFields()[dRow][dCol];
+        //Check if the destination Field is not water
+        if (destination.isPlayable()) {
+            //Check if the destination Field is within range of the Piece
+            if (piece.isValidRange(row, col, dRow, dCol)) {
+                //Check if the destination Field is empty, move there if it is
+                if (!destination.isOccupied()) {
+                    return true;
+                } else {
+                    //Check if the Piece on the destination Field belongs to this Player
+                    if (destination.getPiece().getPlayer() != this) {
+                        return true;
+                    } else {
+                        throw new OccupiedFieldException(this);
+                    }
+                }
+            } else {
+                throw new InvalidRangeException(this, piece.getRank());
+            }
+        } else {
+            throw new UnplayableFieldException(this);
+        }
+    }
+
+    /**
+     *                     destination.setPiece(piece);
+     *                     ownField.setPiece(null);
+     *
+     *                     attack(ownField, destination);
+     */
 
     //TODO Attacking removes Pieces from the Player's list
     /**
