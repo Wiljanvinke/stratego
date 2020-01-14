@@ -8,6 +8,6 @@ public class OccupiedFieldException extends InvalidMoveException {
     }
 
     public OccupiedFieldException(Player player){
-        super(player.getColor() + ", this field is already occupied by your own piece");
+        super(player.getColor() + ", you tried to move on or over a Field with your own Piece");
     }
 }

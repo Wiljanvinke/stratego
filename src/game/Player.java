@@ -165,6 +165,42 @@ public class Player {
                                 } else {
                                     throw new InvalidMoveException("Invalid step in range");
                                 }
+                            case "up":
+                                if (checkValidMove(row, col, row -1, dCol)) {
+                                    Field tempDestination = board.getPlayFields()[row - 1][col];
+                                    if (tempOwn.isOccupied() && tempDestination.isOccupied() &&
+                                            tempOwn.getPiece().getPlayer().equals(tempDestination.getPiece().getPlayer())) {
+                                        throw new InvalidMoveException("Another Piece blocks the path");
+                                    }
+                                    row--;
+                                    break;
+                                } else {
+                                    throw new InvalidMoveException("Invalid step in range");
+                                }
+                            case "right":
+                                if (checkValidMove(row, col, dRow, col + 1)) {
+                                    Field tempDestination = board.getPlayFields()[row][col + 1];
+                                    if (tempOwn.isOccupied() && tempDestination.isOccupied() &&
+                                            tempOwn.getPiece().getPlayer().equals(tempDestination.getPiece().getPlayer())) {
+                                        throw new InvalidMoveException("Another Piece blocks the path");
+                                    }
+                                    col++;
+                                    break;
+                                } else {
+                                    throw new InvalidMoveException("Invalid step in range");
+                                }
+                            case "left":
+                                if (checkValidMove(row, col, dRow, col - 1)) {
+                                    Field tempDestination = board.getPlayFields()[row][col - 1];
+                                    if (tempOwn.isOccupied() && tempDestination.isOccupied() &&
+                                            tempOwn.getPiece().getPlayer().equals(tempDestination.getPiece().getPlayer())) {
+                                        throw new InvalidMoveException("Another Piece blocks the path");
+                                    }
+                                    col--;
+                                    break;
+                                } else {
+                                    throw new InvalidMoveException("Invalid step in range");
+                                }
                         }
                     }
                 }
@@ -196,7 +232,7 @@ public class Player {
         //Check if the destination Field is not water
         if (destination.isPlayable()) {
             //Check if the destination Field is within range of the Piece
-            if (piece.isValidRange(row, col, dRow, dCol)) {
+            if (piece == null || piece.isValidRange(row, col, dRow, dCol)) {
                 //Check if the destination Field is empty, move there if it is
                 if (!destination.isOccupied()) {
                     return true;
@@ -215,13 +251,6 @@ public class Player {
             throw new UnplayableFieldException(this);
         }
     }
-
-    /**
-     *                     destination.setPiece(piece);
-     *                     ownField.setPiece(null);
-     *
-     *                     attack(ownField, destination);
-     */
 
     //TODO Attacking removes Pieces from the Player's list
 

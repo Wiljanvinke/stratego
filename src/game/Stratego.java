@@ -8,4 +8,5 @@ public class Stratego {
     //TODO unique piece behaviour
     //TODO concealment
     //TODO setup phase
+    //TODO printmove()
 }
