@@ -23,6 +23,7 @@ public class Game {
         player2 = new Player(Color.BLUE, board);
         //setupRandomBoard();
         setupTestBoard();
+        printGraveYard();
         board.printBoardPieces();
         while(winner == null) {
             play();
@@ -123,8 +124,8 @@ public class Game {
                     turn = false;
                     valid = true;
                 }
-                board.printBoardPieces();
                 printGraveYard();
+                board.printBoardPieces();
             } catch (InvalidMoveException e) {
                 System.out.println(e.getMessage());
             }
