@@ -11,7 +11,7 @@ public class Miner extends Piece {
     @Override
     public int compare(Piece piece){
         if (piece.getRank() == Rank.BOMB){
-            return 10;
+            return 11;
         }
         return rank.toInt() - piece.getRank().toInt();
     }
