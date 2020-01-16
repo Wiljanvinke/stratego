@@ -152,7 +152,7 @@ public class Game {
         for(Piece[] graveRank: graveyard1){
             for(Piece piece: graveRank){
                 if(piece != null){
-                    s.append(piece.toCode() + " ,");
+                    s.append(piece.toCode().trim() + ", ");
                 }
             }
         }
@@ -161,7 +161,7 @@ public class Game {
         for(Piece[] graveRank: graveyard2){
             for(Piece piece: graveRank){
                 if(piece != null){
-                    s.append(piece.toCode() + " ,");
+                    s.append(piece.toCode().trim() + ", ");
                 }
             }
         }
