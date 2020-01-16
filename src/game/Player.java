@@ -71,7 +71,7 @@ public class Player {
             pieces.add(newPiece);
         }
 
-        printPieces();
+        //printPieces();
     }
 
     public String getName() {
