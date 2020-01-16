@@ -1,6 +1,7 @@
 package game;
 
 import game.exceptions.InvalidMoveException;
+import game.extra.ANSI;
 import game.extra.Color;
 import game.extra.Rank;
 import game.pieces.Piece;
@@ -27,6 +28,7 @@ public class Game {
             play();
             checkWinner();
         }
+        printWinner();
     }
 
     public boolean isTurn() {
@@ -130,12 +132,16 @@ public class Game {
 
     public void checkWinner(){
         if(turn == false && !player1.canMakeMove()){
-            winner = player2.getName();
+            winner = ANSI.ANSI_BLUE + player2.getColor().toString() + ANSI.ANSI_RESET;
         }
         if(turn == true && !player2.canMakeMove()){
-            winner = player1.getName();
+            winner = ANSI.ANSI_RED + player1.getColor().toString() + ANSI.ANSI_RESET;
         }
 
+    }
+
+    public void printWinner(){
+        System.out.println(winner + " is the winner!");
     }
 
 }
