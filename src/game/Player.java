@@ -143,9 +143,9 @@ public class Player {
      */
     public void makeMove() throws InvalidMoveException {
         //Select a field your piece is on
-        System.out.println(this.color + ", what row is the piece in (0-9)?");
+        System.out.println("> " + this.color + ", what row is the piece in (0-9)?");
         int row = chooseCoordinate();
-        System.out.println(this.color + ", what column is the piece in (0-9)?");
+        System.out.println("> " + this.color + ", what column is the piece in (0-9)?");
         int col = chooseCoordinate();
         Field ownField = board.getPlayFields()[row][col];
 
@@ -157,9 +157,9 @@ public class Player {
             //Check if Piece belongs to this Player
             if (piece.getPlayer() == this) {
                 //Select the field you want to move to
-                System.out.println(this.color + ", what row do you want to move the piece to (0-9)?");
+                System.out.println("> " + this.color + ", what row do you want to move the piece to (0-9)?");
                 int dRow = chooseCoordinate();
-                System.out.println(this.color + ", what column do you want to move the piece to (0-9)?");
+                System.out.println("> " + this.color + ", what column do you want to move the piece to (0-9)?");
                 int dCol = chooseCoordinate();
                 Field destination = board.getPlayFields()[dRow][dCol];
 
