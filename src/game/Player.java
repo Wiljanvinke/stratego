@@ -20,7 +20,6 @@ public class Player {
         this.board = board;
         pieces = new ArrayList<Piece>();
         constructGraveyard();
-        //TODO Graveyard
 
         Piece newPiece = new Flag(this);
         pieces.add(newPiece);
@@ -115,7 +114,7 @@ public class Player {
         this.board = board;
     }
 
-    public void constructGraveyard(){
+    private void constructGraveyard(){
         graveyard = new Piece[][]{new Piece[1], new Piece[1], new Piece[8], new Piece[5], new Piece[4], new Piece[4],
                 new Piece[4], new Piece[3], new Piece[2], new Piece[1], new Piece[1], new Piece[6]};
     }
@@ -127,6 +126,15 @@ public class Player {
             }
         }
         return false;
+    }
+
+    public boolean hasFlag(){
+        if (graveyard[0][0] == null){
+            System.out.println(getColor() + " has their flag");
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
