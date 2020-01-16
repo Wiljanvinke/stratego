@@ -291,8 +291,6 @@ public class Player {
         }
     }
 
-    //TODO Attacking removes Pieces from the Player's list
-
     /**
      * Occurs when trying to move a Piece this Player owns to a Field containing a Piece belonging to the other Player.
      * Compares the Ranks of the two Pieces. The lower ranking Piece is removed from its Field and the Board. If the
@@ -305,7 +303,6 @@ public class Player {
     public void attack(Field ownField, Field destination) {
         Piece piece = ownField.getPiece();
         int result = piece.compare(destination.getPiece());
-        //TODO Add to fallen pieces
         if (result > 0) {
             destination.getPiece().getPlayer().getPieces().remove(destination.getPiece());
             destination.getPiece().getPlayer().sendToGraveyard(destination.getPiece());
