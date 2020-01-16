@@ -11,6 +11,7 @@ public class Player {
     private String name;
     private Color color;
     private ArrayList<Piece> pieces;
+    private Piece[][] graveyard;
     private Board board;
 
 
@@ -18,6 +19,8 @@ public class Player {
         this.color = color;
         this.board = board;
         pieces = new ArrayList<Piece>();
+        constructGraveyard();
+        //TODO Graveyard
 
         Piece newPiece = new Flag(this);
         pieces.add(newPiece);
@@ -94,6 +97,26 @@ public class Player {
 
     public void setPieces(ArrayList<Piece> pieces) {
         this.pieces = pieces;
+    }
+
+    public Piece[][] getGraveyard() {
+        return graveyard;
+    }
+
+    public void setGraveyard(Piece[][] graveyard) {
+        this.graveyard = graveyard;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
+    public void constructGraveyard(){
+        graveyard = new Piece[12][];
     }
 
     public boolean canMakeMove(){
@@ -274,12 +297,17 @@ public class Player {
     public void attack(Field ownField, Field destination) {
         Piece piece = ownField.getPiece();
         int result = piece.compare(destination.getPiece());
+        //TODO Add to fallen pieces
         if (result > 0) {
+            destination.getPiece().getPlayer().getPieces().remove(destination.getPiece());
             destination.setPiece(piece);
             ownField.setPiece(null);
         } else if (result < 0) {
+            pieces.remove(piece);
             ownField.setPiece(null);
         } else if (result == 0) {
+            destination.getPiece().getPlayer().getPieces().remove(destination.getPiece());
+            pieces.remove(piece);
             destination.setPiece(null);
             ownField.setPiece(null);
         }
