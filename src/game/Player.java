@@ -96,6 +96,15 @@ public class Player {
         this.pieces = pieces;
     }
 
+    public boolean canMakeMove(){
+        for(Piece piece: pieces){
+            if(piece.getRange() < 0 ){
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Move a Piece from one Field to another using user input
      *
