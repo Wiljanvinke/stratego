@@ -308,7 +308,7 @@ public class Player {
         //TODO Add to fallen pieces
         if (result > 0) {
             destination.getPiece().getPlayer().getPieces().remove(destination.getPiece());
-            sendToGraveyard(destination.getPiece());
+            destination.getPiece().getPlayer().sendToGraveyard(destination.getPiece());
             destination.setPiece(piece);
             ownField.setPiece(null);
         } else if (result < 0) {
@@ -317,10 +317,10 @@ public class Player {
             ownField.setPiece(null);
         } else if (result == 0) {
             destination.getPiece().getPlayer().getPieces().remove(destination.getPiece());
-            sendToGraveyard(destination.getPiece());
+            destination.getPiece().getPlayer().sendToGraveyard(destination.getPiece());
+            destination.setPiece(null);
             pieces.remove(piece);
             sendToGraveyard(piece);
-            destination.setPiece(null);
             ownField.setPiece(null);
         }
     }
@@ -331,6 +331,7 @@ public class Player {
         for(int i = 0; i < graveRank.length; i++){
             if(graveRank[i] == null){
                 graveRank[i] = piece;
+                break;
             }
         }
     }
