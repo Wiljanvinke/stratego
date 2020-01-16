@@ -124,6 +124,7 @@ public class Game {
                     valid = true;
                 }
                 board.printBoardPieces();
+                printGraveYard();
             } catch (InvalidMoveException e) {
                 System.out.println(e.getMessage());
             }
@@ -141,6 +142,29 @@ public class Game {
 
     public void printWinner(){
         System.out.println(winner + " is the winner!");
+    }
+
+    public void printGraveYard(){
+        StringBuilder s = new StringBuilder(ANSI.ANSI_DAGGER + ANSI.ANSI_RED);
+        Piece[][] graveyard1 = player1.getGraveyard();
+        Piece[][] graveyard2 = player2.getGraveyard();
+        for(Piece[] graveRank: graveyard1){
+            for(Piece piece: graveRank){
+                if(piece != null){
+                    s.append(piece.toCode() + ", ");
+                }
+            }
+        }
+        System.out.println(s.append(ANSI.ANSI_RESET));
+        s = new StringBuilder(ANSI.ANSI_DAGGER + ANSI.ANSI_BLUE);
+        for(Piece[] graveRank: graveyard2){
+            for(Piece piece: graveRank){
+                if(piece != null){
+                    s.append(piece.toCode() + ", ");
+                }
+            }
+        }
+        System.out.println(s.append(ANSI.ANSI_RESET));
     }
 
 }
