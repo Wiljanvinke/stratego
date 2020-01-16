@@ -116,7 +116,8 @@ public class Player {
     }
 
     public void constructGraveyard(){
-        graveyard = new Piece[12][];
+        graveyard = new Piece[][]{new Piece[1], new Piece[1], new Piece[8], new Piece[5], new Piece[4], new Piece[4],
+                new Piece[4], new Piece[3], new Piece[2], new Piece[1], new Piece[1], new Piece[6]};
     }
 
     public boolean canMakeMove(){
@@ -300,16 +301,30 @@ public class Player {
         //TODO Add to fallen pieces
         if (result > 0) {
             destination.getPiece().getPlayer().getPieces().remove(destination.getPiece());
+            sendToGraveyard(destination.getPiece());
             destination.setPiece(piece);
             ownField.setPiece(null);
         } else if (result < 0) {
             pieces.remove(piece);
+            sendToGraveyard(piece);
             ownField.setPiece(null);
         } else if (result == 0) {
             destination.getPiece().getPlayer().getPieces().remove(destination.getPiece());
+            sendToGraveyard(destination.getPiece());
             pieces.remove(piece);
+            sendToGraveyard(piece);
             destination.setPiece(null);
             ownField.setPiece(null);
+        }
+    }
+
+    public void sendToGraveyard(Piece piece){
+        int rank = piece.getRank().toInt();
+        Piece[] graveRank = graveyard[rank];
+        for(int i = 0; i < graveRank.length; i++){
+            if(graveRank[i] == null){
+                graveRank[i] = piece;
+            }
         }
     }
 
