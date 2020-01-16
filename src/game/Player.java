@@ -130,7 +130,6 @@ public class Player {
 
     public boolean hasFlag(){
         if (graveyard[0][0] == null){
-            System.out.println(getColor() + " has their flag");
             return true;
         } else {
             return false;
