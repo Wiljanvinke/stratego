@@ -2,7 +2,10 @@ package game;
 
 import game.exceptions.InvalidMoveException;
 import game.extra.Color;
+import game.extra.Rank;
+import game.pieces.Piece;
 
+import java.util.ArrayList;
 import java.util.Collections;
 
 public class Game {
@@ -18,6 +21,7 @@ public class Game {
         player1 = new Player(Color.RED, board);
         player2 = new Player(Color.BLUE, board);
         setupRandomBoard();
+        //setupTestBoard();
         board.printBoardPieces();
         //while(winner == null) {
             play();
@@ -83,6 +87,23 @@ public class Game {
                 index++;
             }
         }
+        return board;
+    }
+
+    public Board setupTestBoard(){
+        ArrayList<Piece> pieces1 = player1.getPieces();
+        for(Piece piece: pieces1) {
+            if (piece.getRank() == Rank.MARSHALL){
+                board.getPlayFields()[3][0].setPiece(piece);
+            }
+        }
+        ArrayList<Piece> pieces2 = player2.getPieces();
+        for(Piece piece: pieces2) {
+            if (piece.getRank() == Rank.SPY){
+                board.getPlayFields()[4][0].setPiece(piece);
+            }
+        }
+
         return board;
     }
 
