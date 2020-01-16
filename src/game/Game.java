@@ -20,12 +20,13 @@ public class Game {
         //board.printBoardPlayable();
         player1 = new Player(Color.RED, board);
         player2 = new Player(Color.BLUE, board);
-        //setupRandomBoard();
-        setupTestBoard();
+        setupRandomBoard();
+        //setupTestBoard();
         board.printBoardPieces();
-        //while(winner == null) {
+        while(winner == null) {
             play();
-        //}
+            checkWinner();
+        }
     }
 
     public boolean isTurn() {
@@ -125,6 +126,16 @@ public class Game {
                 System.out.println(e.getMessage());
             }
         }
+    }
+
+    public void checkWinner(){
+        if(turn == false && !player1.canMakeMove()){
+            winner = player2.getName();
+        }
+        if(turn == true && !player2.canMakeMove()){
+            winner = player1.getName();
+        }
+
     }
 
 }
