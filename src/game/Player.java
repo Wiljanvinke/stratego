@@ -71,7 +71,7 @@ public class Player {
             pieces.add(newPiece);
         }
 
-        printPieces();
+        //printPieces();
     }
 
     public String getName() {
@@ -143,9 +143,9 @@ public class Player {
      */
     public void makeMove() throws InvalidMoveException {
         //Select a field your piece is on
-        System.out.println(this.color + ", what row is the piece in (0-9)?");
+        System.out.println("> " + this.color + ", what row is the piece in (0-9)?");
         int row = chooseCoordinate();
-        System.out.println(this.color + ", what column is the piece in (0-9)?");
+        System.out.println("> " + this.color + ", what column is the piece in (0-9)?");
         int col = chooseCoordinate();
         Field ownField = board.getPlayFields()[row][col];
 
@@ -157,9 +157,9 @@ public class Player {
             //Check if Piece belongs to this Player
             if (piece.getPlayer() == this) {
                 //Select the field you want to move to
-                System.out.println(this.color + ", what row do you want to move the piece to (0-9)?");
+                System.out.println("> " + this.color + ", what row do you want to move the piece to (0-9)?");
                 int dRow = chooseCoordinate();
-                System.out.println(this.color + ", what column do you want to move the piece to (0-9)?");
+                System.out.println("> " + this.color + ", what column do you want to move the piece to (0-9)?");
                 int dCol = chooseCoordinate();
                 Field destination = board.getPlayFields()[dRow][dCol];
 
@@ -291,8 +291,6 @@ public class Player {
         }
     }
 
-    //TODO Attacking removes Pieces from the Player's list
-
     /**
      * Occurs when trying to move a Piece this Player owns to a Field containing a Piece belonging to the other Player.
      * Compares the Ranks of the two Pieces. The lower ranking Piece is removed from its Field and the Board. If the
@@ -305,10 +303,9 @@ public class Player {
     public void attack(Field ownField, Field destination) {
         Piece piece = ownField.getPiece();
         int result = piece.compare(destination.getPiece());
-        //TODO Add to fallen pieces
         if (result > 0) {
             destination.getPiece().getPlayer().getPieces().remove(destination.getPiece());
-            sendToGraveyard(destination.getPiece());
+            destination.getPiece().getPlayer().sendToGraveyard(destination.getPiece());
             destination.setPiece(piece);
             ownField.setPiece(null);
         } else if (result < 0) {
@@ -317,10 +314,10 @@ public class Player {
             ownField.setPiece(null);
         } else if (result == 0) {
             destination.getPiece().getPlayer().getPieces().remove(destination.getPiece());
-            sendToGraveyard(destination.getPiece());
+            destination.getPiece().getPlayer().sendToGraveyard(destination.getPiece());
+            destination.setPiece(null);
             pieces.remove(piece);
             sendToGraveyard(piece);
-            destination.setPiece(null);
             ownField.setPiece(null);
         }
     }
@@ -331,6 +328,7 @@ public class Player {
         for(int i = 0; i < graveRank.length; i++){
             if(graveRank[i] == null){
                 graveRank[i] = piece;
+                break;
             }
         }
     }
