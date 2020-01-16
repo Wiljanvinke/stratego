@@ -4,7 +4,7 @@ import game.Player;
 import game.extra.Rank;
 
 public class Piece {
-    private Rank rank;
+    protected Rank rank;
     private Player player;
     private int range = 1;
 

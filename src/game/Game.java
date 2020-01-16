@@ -1,8 +1,12 @@
 package game;
 
 import game.exceptions.InvalidMoveException;
+import game.extra.ANSI;
 import game.extra.Color;
+import game.extra.Rank;
+import game.pieces.Piece;
 
+import java.util.ArrayList;
 import java.util.Collections;
 
 public class Game {
@@ -17,11 +21,14 @@ public class Game {
         //board.printBoardPlayable();
         player1 = new Player(Color.RED, board);
         player2 = new Player(Color.BLUE, board);
-        setupRandomBoard();
+        //setupRandomBoard();
+        setupTestBoard();
         board.printBoardPieces();
-        //while(winner == null) {
+        while(winner == null) {
             play();
-        //}
+            checkWinner();
+        }
+        printWinner();
     }
 
     public boolean isTurn() {
@@ -86,6 +93,23 @@ public class Game {
         return board;
     }
 
+    public Board setupTestBoard(){
+        ArrayList<Piece> pieces1 = player1.getPieces();
+        for(Piece piece: pieces1) {
+            if (piece.getRank() == Rank.SCOUT){
+                board.getPlayFields()[3][0].setPiece(piece);
+            }
+        }
+        ArrayList<Piece> pieces2 = player2.getPieces();
+        for(Piece piece: pieces2) {
+            if (piece.getRank() == Rank.SCOUT){
+                board.getPlayFields()[4][0].setPiece(piece);
+            }
+        }
+
+        return board;
+    }
+
     public void play(){
         boolean valid = false;
         while(!valid) {
@@ -104,6 +128,19 @@ public class Game {
                 System.out.println(e.getMessage());
             }
         }
+    }
+
+    public void checkWinner(){
+        if((turn == false && !player1.canMakeMove()) || !player1.hasFlag()){
+            winner = ANSI.ANSI_BLUE + player2.getColor().toString();
+        }
+        if((turn == true && !player2.canMakeMove()) || !player2.hasFlag()){
+            winner = ANSI.ANSI_RED + player1.getColor().toString();
+        }
+    }
+
+    public void printWinner(){
+        System.out.println(winner + " is the winner!");
     }
 
 }

@@ -11,6 +11,7 @@ public class Player {
     private String name;
     private Color color;
     private ArrayList<Piece> pieces;
+    private Piece[][] graveyard;
     private Board board;
 
 
@@ -18,6 +19,7 @@ public class Player {
         this.color = color;
         this.board = board;
         pieces = new ArrayList<Piece>();
+        constructGraveyard();
 
         Piece newPiece = new Flag(this);
         pieces.add(newPiece);
@@ -65,7 +67,7 @@ public class Player {
 
         //Making Bombs
         for (int i = 0; i < 6; i++) {
-            newPiece = new Piece(this, 11);
+            newPiece = new Bomb(this);
             pieces.add(newPiece);
         }
 
@@ -94,6 +96,44 @@ public class Player {
 
     public void setPieces(ArrayList<Piece> pieces) {
         this.pieces = pieces;
+    }
+
+    public Piece[][] getGraveyard() {
+        return graveyard;
+    }
+
+    public void setGraveyard(Piece[][] graveyard) {
+        this.graveyard = graveyard;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public void setBoard(Board board) {
+        this.board = board;
+    }
+
+    private void constructGraveyard(){
+        graveyard = new Piece[][]{new Piece[1], new Piece[1], new Piece[8], new Piece[5], new Piece[4], new Piece[4],
+                new Piece[4], new Piece[3], new Piece[2], new Piece[1], new Piece[1], new Piece[6]};
+    }
+
+    public boolean canMakeMove(){
+        for(Piece piece: pieces){
+            if(piece.getRange() > 0 ){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean hasFlag(){
+        if (graveyard[0][0] == null){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -265,14 +305,33 @@ public class Player {
     public void attack(Field ownField, Field destination) {
         Piece piece = ownField.getPiece();
         int result = piece.compare(destination.getPiece());
+        //TODO Add to fallen pieces
         if (result > 0) {
+            destination.getPiece().getPlayer().getPieces().remove(destination.getPiece());
+            sendToGraveyard(destination.getPiece());
             destination.setPiece(piece);
             ownField.setPiece(null);
         } else if (result < 0) {
+            pieces.remove(piece);
+            sendToGraveyard(piece);
             ownField.setPiece(null);
         } else if (result == 0) {
+            destination.getPiece().getPlayer().getPieces().remove(destination.getPiece());
+            sendToGraveyard(destination.getPiece());
+            pieces.remove(piece);
+            sendToGraveyard(piece);
             destination.setPiece(null);
             ownField.setPiece(null);
+        }
+    }
+
+    public void sendToGraveyard(Piece piece){
+        int rank = piece.getRank().toInt();
+        Piece[] graveRank = graveyard[rank];
+        for(int i = 0; i < graveRank.length; i++){
+            if(graveRank[i] == null){
+                graveRank[i] = piece;
+            }
         }
     }
 
