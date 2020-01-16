@@ -20,8 +20,8 @@ public class Game {
         //board.printBoardPlayable();
         player1 = new Player(Color.RED, board);
         player2 = new Player(Color.BLUE, board);
-        setupRandomBoard();
-        //setupTestBoard();
+        //setupRandomBoard();
+        setupTestBoard();
         board.printBoardPieces();
         //while(winner == null) {
             play();
@@ -93,7 +93,7 @@ public class Game {
     public Board setupTestBoard(){
         ArrayList<Piece> pieces1 = player1.getPieces();
         for(Piece piece: pieces1) {
-            if (piece.getRank() == Rank.MARSHALL){
+            if (piece.getRank() == Rank.BOMB){
                 board.getPlayFields()[3][0].setPiece(piece);
             }
         }

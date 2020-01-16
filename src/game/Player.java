@@ -65,7 +65,7 @@ public class Player {
 
         //Making Bombs
         for (int i = 0; i < 6; i++) {
-            newPiece = new Piece(this, 11);
+            newPiece = new Bomb(this);
             pieces.add(newPiece);
         }
 
