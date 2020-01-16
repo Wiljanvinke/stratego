@@ -21,8 +21,8 @@ public class Game {
         //board.printBoardPlayable();
         player1 = new Player(Color.RED, board);
         player2 = new Player(Color.BLUE, board);
-        //setupRandomBoard();
-        setupTestBoard();
+        setupRandomBoard();
+        //setupTestBoard();
         printGraveYard();
         board.printBoardPieces();
         while(winner == null) {
