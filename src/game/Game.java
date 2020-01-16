@@ -132,10 +132,10 @@ public class Game {
 
     public void checkWinner(){
         if((turn == false && !player1.canMakeMove()) || !player1.hasFlag()){
-            winner = ANSI.ANSI_BLUE + player2.getColor().toString() + ANSI.ANSI_RESET;
+            winner = ANSI.ANSI_BLUE + player2.getColor().toString();
         }
         if((turn == true && !player2.canMakeMove()) || !player2.hasFlag()){
-            winner = ANSI.ANSI_RED + player1.getColor().toString() + ANSI.ANSI_RESET;
+            winner = ANSI.ANSI_RED + player1.getColor().toString();
         }
     }
 
