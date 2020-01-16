@@ -121,7 +121,7 @@ public class Player {
 
     public boolean canMakeMove(){
         for(Piece piece: pieces){
-            if(piece.getRange() < 0 ){
+            if(piece.getRange() > 0 ){
                 return true;
             }
         }
