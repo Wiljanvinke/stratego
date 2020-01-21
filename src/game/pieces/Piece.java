@@ -3,7 +3,7 @@ package game.pieces;
 import game.Player;
 import game.extra.Rank;
 
-public class Piece {
+public class Piece implements Comparable<Piece> {
     protected Rank rank;
     private Player player;
     private int range = 1;
@@ -81,5 +81,10 @@ public class Piece {
             rank = rank + " ";
         }
         return player.getColor().toChar() + rank;
+    }
+
+    @Override
+    public int compareTo(Piece piece) {
+        return rank.toInt() - piece.getRank().toInt();
     }
 }
