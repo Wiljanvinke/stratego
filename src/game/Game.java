@@ -85,7 +85,9 @@ public class Game {
         }
         while (!setupPieces.isEmpty()){
             for(int i = 0; i < ranks.length; i++) {
-                System.out.println(player.getColor() + " "  + Rank.toEnum(i).toString() + "[" + i + "]" + ": " + ranks[i]);
+                if(ranks[i] > 0){
+                    System.out.println(player.getColor() + " "  + Rank.toEnum(i).toString() + "[" + i + "]" + ": " + ranks[i]);
+                }
             }
             System.out.println("> "
                     + player.getColor() + ", please select the rank of the piece you want to place (0-11)");
