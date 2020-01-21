@@ -1,10 +1,12 @@
 package game;
 
+import game.exceptions.InvalidCoordinateException;
 import game.exceptions.InvalidMoveException;
 import game.extra.ANSI;
 import game.extra.Color;
 import game.extra.Rank;
 import game.pieces.Piece;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,7 +23,9 @@ public class Game {
         //board.printBoardPlayable();
         player1 = new Player(Color.RED, board);
         player2 = new Player(Color.BLUE, board);
-        setupRandomBoard();
+        setupPlayerBoard(player1);
+        //setupPlayerBoard(player2);
+        //setupRandomBoard();
         //setupTestBoard();
         printGraveYard();
         board.printBoardPieces();
@@ -70,6 +74,35 @@ public class Game {
 
     public void setPlayer2(Player player2) {
         this.player2 = player2;
+    }
+
+    public Board setupPlayerBoard(Player player){
+        ArrayList<Piece> setupPieces = player.getPieces();
+        Collections.sort(setupPieces);
+        int[] ranks = new int[12];
+        for(Piece piece: setupPieces){
+           ranks[piece.getRank().toInt()]++;
+        }
+        while (!setupPieces.isEmpty()){
+            for(int i = 0; i < ranks.length; i++) {
+                System.out.println(player.getColor() + " "  + Rank.toEnum(i).toString() + "[" + i + "]" + ": " + ranks[i]);
+            }
+            System.out.println("> "
+                    + player.getColor() + ", please select the rank of the piece you want to place (0-11)");
+            try{
+                Rank rank = player.chooseRank();
+                System.out.println("> " + player.getColor() + ", what row do you want to place the piece in (0-9)?");
+                int dRow = player.chooseCoordinate();
+                System.out.println("> " + player.getColor() + ", what column do you want to place the piece in (0-9)?");
+                int dCol = player.chooseCoordinate();
+                Field destination = board.getPlayFields()[dRow][dCol];
+                //TODO valid fields
+                //TODO remove piece from setupPieces and ranks
+            } catch (InvalidCoordinateException e){
+                System.out.println(e.getMessage());
+            }
+        }
+        return board;
     }
 
     public Board setupRandomBoard(){
