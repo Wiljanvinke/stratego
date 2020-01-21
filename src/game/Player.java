@@ -2,6 +2,7 @@ package game;
 
 import game.exceptions.*;
 import game.extra.Color;
+import game.extra.Rank;
 import game.pieces.*;
 
 import java.util.ArrayList;
@@ -348,6 +349,17 @@ public class Player {
             }
         }
         throw new InvalidCoordinateException(this);
+    }
+
+    public Rank chooseRank() throws InvalidCoordinateException {
+        Scanner in = new Scanner(System.in);
+        if (in.hasNextInt()) {
+            int input = in.nextInt();
+            if (0 <= input && input <= 11) {
+                return Rank.toEnum(input);
+            }
+        }
+        throw new InvalidCoordinateException(getColor() + ", please choose a number between 0 and 11");
     }
 
     public void printPieces() {
