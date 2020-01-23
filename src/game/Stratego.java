@@ -5,6 +5,5 @@ public class Stratego {
         Game game = new Game();
     }
     //TODO concealment
-    //TODO setup phase
     //TODO printmove()
 }

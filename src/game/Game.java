@@ -1,7 +1,9 @@
 package game;
 
 import game.exceptions.InvalidCoordinateException;
+import game.exceptions.InvalidFieldException;
 import game.exceptions.InvalidMoveException;
+import game.exceptions.OccupiedFieldException;
 import game.extra.ANSI;
 import game.extra.Color;
 import game.extra.Rank;
@@ -24,7 +26,7 @@ public class Game {
         player1 = new Player(Color.RED, board);
         player2 = new Player(Color.BLUE, board);
         setupPlayerBoard(player1);
-        //setupPlayerBoard(player2);
+        setupPlayerBoard(player2);
         //setupRandomBoard();
         //setupTestBoard();
         printGraveYard();
@@ -86,21 +88,46 @@ public class Game {
         while (!setupPieces.isEmpty()){
             for(int i = 0; i < ranks.length; i++) {
                 if(ranks[i] > 0){
-                    System.out.println(player.getColor() + " "  + Rank.toEnum(i).toString() + "[" + i + "]" + ": " + ranks[i]);
+                    System.out.println(player.getColor() + " "  +
+                            Rank.toEnum(i).toString() + "[" + i + "]" + ": " + ranks[i]);
                 }
             }
+            board.printBoardPieces();
             System.out.println("> "
                     + player.getColor() + ", please select the rank of the piece you want to place (0-11)");
             try{
                 Rank rank = player.chooseRank();
-                System.out.println("> " + player.getColor() + ", what row do you want to place the piece in (0-9)?");
+                Piece piece = null;
+                for (Piece setupPiece : setupPieces) {
+                    if (setupPiece.getRank().equals(rank)) {
+                        piece = setupPiece;
+                    }
+                }
+                if (piece == null){
+                    throw new InvalidMoveException(player.getColor() +
+                            ", you do not have a " + piece.getRank().toString().toUpperCase() + " anymore");
+                }
+                System.out.println("> " + player.getColor() + ", what row do you want to place the " +
+                        piece.getRank().toString().toUpperCase() +  " in (0-9)?");
                 int dRow = player.chooseCoordinate();
-                System.out.println("> " + player.getColor() + ", what column do you want to place the piece in (0-9)?");
-                int dCol = player.chooseCoordinate();
-                Field destination = board.getPlayFields()[dRow][dCol];
-                //TODO valid fields
-                //TODO remove piece from setupPieces and ranks
-            } catch (InvalidCoordinateException e){
+                if((player.getColor().equals(Color.RED) && (0 <= dRow && dRow < 4)) ||
+                        (player.getColor().equals(Color.BLUE) && (6 <= dRow && dRow < 10))){
+                    System.out.println("> " + player.getColor() +
+                            ", what column do you want to place the " +
+                            piece.getRank().toString().toUpperCase() +  " in (0-9)?");
+                    int dCol = player.chooseCoordinate();
+                    Field destination = board.getPlayFields()[dRow][dCol];
+                    if(!destination.isOccupied()){
+                        destination.setPiece(piece);
+                        setupPieces.remove(piece);
+                        ranks[piece.getRank().toInt()]--;
+                    } else {
+                        throw new OccupiedFieldException(player);
+                    }
+                } else {
+                    throw new InvalidMoveException(player.getColor() + ", please select a valid row for your color");
+                }
+            } catch (InvalidMoveException e){
                 System.out.println(e.getMessage());
             }
         }
