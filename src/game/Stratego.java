@@ -5,6 +5,5 @@ public class Stratego {
         Game game = new Game();
         game.start();
     }
-    //TODO concealment
-    //TODO printmove()
+    //TODO AI
 }
