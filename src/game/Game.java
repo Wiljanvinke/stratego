@@ -64,7 +64,7 @@ public class Game {
     }
 
     public Board setupPlayerBoard(Player player){
-        ArrayList<Piece> setupPieces = player.getPieces();
+        ArrayList<Piece> setupPieces = new ArrayList<>(player.getPieces());
         Collections.sort(setupPieces);
         int[] ranks = new int[12];
         for(Piece piece: setupPieces){
