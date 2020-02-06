@@ -21,21 +21,6 @@ public class Game {
     private Player player2;
 
     public Game(){
-        board = new Board();
-        //board.printBoardPlayable();
-        player1 = new Player(Color.RED, board);
-        player2 = new Player(Color.BLUE, board);
-        setupPlayerBoard(player1);
-        setupPlayerBoard(player2);
-        //setupRandomBoard();
-        //setupTestBoard();
-        printGraveYard();
-        board.printBoardPieces();
-        while(winner == null) {
-            play();
-            checkWinner();
-        }
-        printWinner();
     }
 
     public boolean isTurn() {
@@ -79,7 +64,7 @@ public class Game {
     }
 
     public Board setupPlayerBoard(Player player){
-        ArrayList<Piece> setupPieces = player.getPieces();
+        ArrayList<Piece> setupPieces = new ArrayList<>(player.getPieces());
         Collections.sort(setupPieces);
         int[] ranks = new int[12];
         for(Piece piece: setupPieces){
@@ -105,7 +90,7 @@ public class Game {
                 }
                 if (piece == null){
                     throw new InvalidMoveException(player.getColor() +
-                            ", you do not have a " + piece.getRank().toString().toUpperCase() + " anymore");
+                            ", you do not have a " + rank.toString().toUpperCase() + " anymore");
                 }
                 System.out.println("> " + player.getColor() + ", what row do you want to place the " +
                         piece.getRank().toString().toUpperCase() +  " in (0-9)?");
@@ -230,4 +215,21 @@ public class Game {
         System.out.println(s.append(ANSI.ANSI_RESET));
     }
 
+    public void start(){
+        board = new Board();
+        //board.printBoardPlayable();
+        player1 = new Player(Color.RED, board);
+        player2 = new Player(Color.BLUE, board);
+        setupPlayerBoard(player1);
+        setupPlayerBoard(player2);
+        //setupRandomBoard();
+        //setupTestBoard();
+        printGraveYard();
+        board.printBoardPieces();
+        while(winner == null) {
+            play();
+            checkWinner();
+        }
+        printWinner();
+    }
 }
