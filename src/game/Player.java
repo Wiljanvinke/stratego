@@ -120,6 +120,7 @@ public class Player {
                 new Piece[4], new Piece[3], new Piece[2], new Piece[1], new Piece[1], new Piece[6]};
     }
 
+    //TODO move simulation (ex. bombs on the first row)
     public boolean canMakeMove(){
         for(Piece piece: pieces){
             if(piece.getRange() > 0 ){
